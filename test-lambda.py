@@ -8,7 +8,7 @@ import uuid
 def lambda_handler(event, context):
 
     dynamodb = boto3.resource('dynamodb', region_name='eu-central-1')
-    table = dynamodb.Table('testing-stream-1')
+    table = dynamodb.Table('DEMO-Serverless-Pipeline-DynamoDB')
     sns = boto3.client('sns')
 
     for record in event['Records']:
@@ -25,6 +25,7 @@ def lambda_handler(event, context):
 
        print("Decoded payload: " + str(output_record))
        table.put_item(Item=output_record)
+       
        if decoded_payload["status"] == "FAIL":
         response = sns.publish(
             TopicArn='arn:aws:sns:eu-central-1:779684591593:testing-stream-1',
